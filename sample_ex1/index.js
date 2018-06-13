@@ -1,7 +1,8 @@
-var rect = {
-    perimeter : (x,y) => [2*(x+y)],
-    area : (x,y) => (x*y)
-};
+// var rect = {
+//     perimeter : (x,y) => [2*(x+y)],
+//     area : (x,y) => (x*y)
+// };
+var rect = require('./rectangle');
 
 function solve(l,b){
     console.log("the length is "+l+" the breadth is "+b);
