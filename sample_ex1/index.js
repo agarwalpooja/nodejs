@@ -6,12 +6,19 @@ var rect = require('./rectangle');
 
 function solve(l,b){
     console.log("the length is "+l+" the breadth is "+b);
-    if(l<=0 || b<=0)
-    console.log("enter the correct length n breadth where l="+l+"and b="+b);
-    else{
-    console.log("perimeter is"+rect.perimeter(l,b));
-    console.log("ares is"+rect.area(l,b));
+    rect(l,b,(err,rectangle) => {
+        if(err){
+            console.log("Error: "+err.message);
         }
+        
+        else
+        {
+            console.log("area is : "+rectangle.area());
+            console.log("perimeter is :"+rectangle.perimeter());
+        }
+        console.log("after call to rect");
+    
+});
 }
 
 solve(4,5);
