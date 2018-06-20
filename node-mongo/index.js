@@ -6,10 +6,10 @@ const url = 'mongodb://localhost:27017/conFusion';
 MongoClient.connect(url, (err, db) => {
 
     assert.equal(err,null);
-
+    
     console.log('Connected correctly to server');
-
-    const collection = db.collection("dishes");
+    var dbase = db.db("conFusion");
+    const collection = dbase.collection("dishes");
     collection.insertOne({"name": "Uthappizza", "description": "test"},
     (err, result) => {
         assert.equal(err,null);
@@ -23,7 +23,7 @@ MongoClient.connect(url, (err, db) => {
             console.log("Found:\n");
             console.log(docs);
 
-            db.dropCollection("dishes", (err, result) => {
+            dbase.dropCollection("dishes", (err, result) => {
                 assert.equal(err,null);
 
                 db.close();
