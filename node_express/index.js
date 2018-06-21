@@ -6,6 +6,8 @@ const port = 3000;
 const bodyParser = require('body-parser');
 const app = express();
 const dishRouter = require('./routes/dishrouter');
+const promotionRouter = require('./routes/promotions');
+const leaderRouter = require('./routes/leaders');
 
 app.use(bodyParser.json());
 
@@ -13,6 +15,8 @@ app.use(morgan('dev'));
 app.use(express.static(__dirname+'/public'));
 
 app.use('/dishes',dishRouter);
+app.use('/promotions',promotionRouter);
+app.use('/leaders',leaderRouter);
 
 app.use((req, res, next) => {
   console.log(req.headers);
