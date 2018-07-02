@@ -8,22 +8,41 @@ var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function(){
   console.log("Connected to DB");
-    var newDish = Dishes({
-        name: 'Ukn',
-        description: 'test'
+  Dishes.create({
+    name: 'Uthappizza',
+    description: 'test'
+})
+.then((dish) => {
+    console.log(dish);
+
+    return Dishes.findByIdAndUpdate(dish._id, {
+        $set: { description: 'Updated test'}
+    },{ 
+        new: true 
+    })
+    .exec();
+})
+.then((dish) => {
+    console.log(dish);
+
+    dish.comments.push({
+        rating: 5,
+        comment: 'I\'m getting a sinking feeling!',
+        author: 'Leonardo di Carpaccio'
     });
 
-    newDish.save(function(err){
-        if ( err ) throw err;
-        console.log("dish Saved Successfully");
-        Dishes.find({},function(err,dishes){
-            if(err)
-            console.log("error finding");
-            console.log("the dishes are"+dishes)
-            db.collection('dishes').drop();
-            db.close();
-        })
-        
-    });
+    return dish.save();
+})
+.then((dish) => {
+    console.log(dish);
+
+    return db.collection('dishes').drop();
+})
+.then(() => {
+    return db.close();
+})
+.catch((err) => {
+    console.log(err);
+});
 });
 
