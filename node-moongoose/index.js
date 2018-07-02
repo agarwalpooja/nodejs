@@ -1,38 +1,29 @@
 const mongoose = require('mongoose');
-mongoose.Promise = require('bluebird');
-
+//mongoose.Promise = require('bluebird');
+const url = 'mongodb://localhost:27017/conFusion';
+const connect = mongoose.connect(url);
 const Dishes = require('./models/dishes');
+var db = mongoose.connection;
 
-const url = 'mongodb://localhost:27017/conFusion1';
-const connect = mongoose.connect(url, {
-    //useMongoClient: true
-});
-
-connect.then((db) => {
-
-    console.log('Connected correctly to server');
-    var dbb=db.db("conFusion1")
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function(){
+  console.log("Connected to DB");
     var newDish = Dishes({
-        name: 'Uthappizza',
+        name: 'Ukn',
         description: 'test'
     });
 
-    newDish.save()
-        .then((dish) => {
-            console.log(dish);
-
-            return Dishes.find({}).exec();
+    newDish.save(function(err){
+        if ( err ) throw err;
+        console.log("dish Saved Successfully");
+        Dishes.find({},function(err,dishes){
+            if(err)
+            console.log("error finding");
+            console.log("the dishes are"+dishes)
+            db.collection('dishes').drop();
+            db.close();
         })
-        .then((dishes) => {
-            console.log(dishes);
-
-            return dbb.collection('dishes').drop();
-        })
-        .then(() => {
-            return db.close();
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-
+        
+    });
 });
+
