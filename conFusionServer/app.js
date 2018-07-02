@@ -16,6 +16,17 @@ var usersRouter = require('./routes/users');
 
 var app = express();
 
+const mongoose = require('mongoose');
+//mongoose.Promise = require('bluebird');
+const url = 'mongodb://localhost:27017/conFusion';
+const connect = mongoose.connect(url);
+const Dishes = require('./models/dishes');
+var db = mongoose.connection;
+
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function(){
+  console.log("Connected to DB");})
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
