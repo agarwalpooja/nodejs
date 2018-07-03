@@ -5,7 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 const dishRouter = require('./routes/dishrouter');
-const promotionRouter = require('./routes/promotions');
+const promotionRouter = require('./routes/promotionrouter');
 const leaderRouter = require('./routes/leaders');
 
 
@@ -21,6 +21,8 @@ const mongoose = require('mongoose');
 const url = 'mongodb://localhost:27017/conFusion';
 const connect = mongoose.connect(url);
 const Dishes = require('./models/dishes');
+const Promotions = require('./models/promotions');
+const Leaders = require('./models/leaders');
 var db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'connection error:'));
