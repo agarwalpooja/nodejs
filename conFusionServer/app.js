@@ -15,14 +15,17 @@ const leaderRouter = require('./routes/leaders');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var config = require('./config');
+
 
 
 
 var app = express();
 
+
 const mongoose = require('mongoose');
 //mongoose.Promise = require('bluebird');
-const url = 'mongodb://localhost:27017/conFusion';
+const url = config.mongoUrl;
 const connect = mongoose.connect(url);
 const Dishes = require('./models/dishes');
 const Promotions = require('./models/promotions');
@@ -40,34 +43,12 @@ app.set('view engine', 'ejs');
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(session({
-  name: 'session-id',
-  secret: '12345-67890-09876-54321',
-  saveUninitialized: false,
-  resave: false,
-  store: new FileStore()
-}));
+
 app.use(passport.initialize());
-app.use(passport.session());
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-
-function auth (req, res, next) {
-  console.log(req.user);
-
-  if (!req.user) {
-    var err = new Error('You are not authenticated!');
-    res.setHeader('WWW-Authenticate', 'Basic');                          
-    err.status = 401;
-    next(err);
-  }
-  else {
-        next();
-  }
-}
-
-app.use(auth);
+app.use(express.static(path.join(__dirname, 'public')));
 
 
 
